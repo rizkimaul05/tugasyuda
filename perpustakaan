@@ -1,0 +1,114 @@
+public class Perpustakaan {
+     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    Perpustakaan(String name){
+        this.name = name;
+    }
+
+    void statusAda(){
+
+    }
+    void statusPinjam(String info){
+    }
+    void statusKembali(){
+    }
+}
+
+public class Buku extends Perpustakaan{
+
+    Buku(String name){
+        super(name);
+    }
+
+
+    void statusAda(){
+        System.out.println(getName());
+    }
+
+
+    void statusPinjam(String info) {
+        setName(getName() + info);
+    }
+
+    void statusKembali(){
+        setName(getName());
+    }
+}
+
+public class Application {
+    static Perpustakaan[] data = new Buku[10];
+    static Scanner scan = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        boolean running = true;
+        while(running){
+            String userinput = scan.nextLine();
+            String[] input = userinput.split(" ");
+            if(input[0].equalsIgnoreCase("status")){
+                showBooks();
+            }else if(input[0].equalsIgnoreCase("add")){
+                System.out.println("Masukan data buku : ");
+                addBook(scan.nextLine());
+                System.out.println("Berhasil Menambahkan");
+            }else if(input[0].equalsIgnoreCase("borrow")) {
+                System.out.println("Masukan data buku yang akan dipinjam : ");
+                borrowBook(scan.nextLine());
+                System.out.println("Berhasil");
+            }else if(input[0].equalsIgnoreCase("return")) {
+                System.out.println("Masukan data buku yang akan dikembalikan : ");
+                returnBook(scan.nextLine());
+                System.out.println("Berhasil");
+            }else if(input[0].equalsIgnoreCase("exit")){
+                running = false;
+            }else{
+                System.out.println("Unknown Command");
+            }
+
+        }
+    }
+
+    static void showBooks(){
+        for(int i = 0; i< data.length;i++){
+            if(data[i] != null) {
+                data[i].statusAda();
+                }
+            }
+        }
+
+
+    static void addBook(String name){
+        for(int i = 0; i<data.length;i++){
+            Buku buku = new Buku(name);
+            if(data[i] == null){
+                data[i] = buku;
+                break;
+            }
+        }
+    }
+
+    static void borrowBook(String name){
+        for(int i = 0; i<data.length;i++) {
+            if(data[i].getName().contains(name)){
+                data[i].statusPinjam(" (Buku ini sedang dipinjam)");
+                break;
+            }
+        }
+    }
+
+    static void returnBook(String name){
+        for(int i = 0; i<data.length;i++){
+            if(data[i].getName().contains(name)){
+                data[i].statusKembali();
+                break;
+            }
+        }
+    }
+}
